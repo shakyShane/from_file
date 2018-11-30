@@ -1,6 +1,6 @@
 [package]
 name = "from_file"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Shane Osbourne <shane.osbourne8@gmail.com>"]
 description = "A simple convenience to deserialize a rust Struct or Enum directly from a json or yaml file path."
 repository = "https://github.com/shakyShane/from_file"
@@ -14,4 +14,4 @@ serde_yaml = "0.8"
 serde_json = "1.0"
 
 [badges]
-travis-ci = { repository = "shakyshane/from_file", branch = "master" }
+travis-ci = { repository = "shakyShane/from_file", branch = "master" }

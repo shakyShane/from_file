@@ -1,6 +1,6 @@
 [package]
 name = "from_file_derive"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Shane Osbourne <shane.osbourne8@gmail.com>"]
 description = "Enable #[derive(FromFile)]"
 repository = "https://github.com/shakyShane/from_file"
@@ -19,4 +19,4 @@ from_file = { path = "../from_file", version = "0.1.0" }
 [lib]
 proc-macro = true
 
-travis-ci = { repository = "shakyshane/from_file", branch = "master" }
+travis-ci = { repository = "shakyShane/from_file", branch = "master" }
