@@ -1,7 +1,11 @@
 [package]
 name = "from_file_derive"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Shane Osbourne <shane.osbourne8@gmail.com>"]
+description = "Enable #[derive(FromFile)]"
+repository = "https://github.com/shakyShane/from_file"
+keywords = ["serde", "derive", "file"]
+license = "MIT"
 
 [dependencies]
 syn = "0.15.22"
@@ -10,7 +14,9 @@ quote = "0.6.10"
 [dev-dependencies]
 serde = "1.0.80"
 serde_derive = "1.0.80"
-from_file = { path = "../from_file" }
+from_file = { path = "../from_file", version = "0.1.0" }
 
 [lib]
 proc-macro = true
+
+travis-ci = { repository = "shakyshane/from_file", branch = "master" }
