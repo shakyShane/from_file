@@ -1,0 +1,16 @@
+[package]
+name = "from_file_derive"
+version = "0.1.0"
+authors = ["Shane Osbourne <shane.osbourne8@gmail.com>"]
+
+[dependencies]
+syn = "0.15.22"
+quote = "0.6.10"
+
+[dev-dependencies]
+serde = "1.0.80"
+serde_derive = "1.0.80"
+from_file = { path = "../from_file" }
+
+[lib]
+proc-macro = true

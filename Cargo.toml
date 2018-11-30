@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "from_file",
+    "from_file_derive",
+]
