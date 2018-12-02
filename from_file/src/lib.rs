@@ -1,9 +1,58 @@
-//! This crate provides a trait that can be implemented or derived
+//! This crate provides the trait [FromFile] that can be implemented or derived
 //! for any struct or enum. Upon doing so, you'll get a `from_file` method
 //! that allows you to skip having read the file the disk & choosing the correct
 //! serde method - that will be done based on the file extension.
 //!
-//! # Example
+//! # Quick Preview
+//!
+//! All examples require that serde Deserialize is also derived.
+//! (see below for copy/paste example)
+//!
+//! ```
+//! # #[macro_use]
+//! # extern crate serde_derive;
+//! # extern crate serde;
+//! # #[macro_use]
+//! # extern crate from_file_derive;
+//! # use from_file::FromFile;
+//! #[derive(Deserialize)]
+//! struct Person {
+//!     name: String
+//! }
+//!
+//! impl FromFile for Person {}
+//!
+//! fn main() {
+//!     let path = "test/fixtures/person.json";
+//!     let person = Person::from_file(path).expect("deserialize from file");
+//!     assert_eq!(person.name, String::from("Shane"));
+//! }
+//! ```
+//!
+//! # Quick Preview with `from_file_derive`
+//!
+//! This requires the additional crate [from_file_derive](https://crates.io/crates/from_file_derive)
+//!
+//! ```
+//! # #[macro_use]
+//! # extern crate serde_derive;
+//! # extern crate serde;
+//! # #[macro_use]
+//! # extern crate from_file_derive;
+//! # use from_file::FromFile;
+//! #[derive(Deserialize, FromFile)]
+//! struct Person {
+//!     name: String
+//! }
+//!
+//! fn main() {
+//!     let path = "test/fixtures/person.json";
+//!     let person = Person::from_file(path).expect("deserialize from file");
+//!     assert_eq!(person.name, String::from("Shane"));
+//! }
+//! ```
+//!
+//! # Copy/Paste example
 //!
 //! ```
 //! #[macro_use]
@@ -15,22 +64,42 @@
 //!
 //! use from_file::FromFile;
 //!
-//! fn main() {
-//!     #[derive(Deserialize, FromFile)]
-//!     struct Person {
-//!         name: String
-//!     }
+//! #[derive(Deserialize, FromFile)]
+//! struct Person {
+//!     name: String
+//! }
 //!
+//! fn main() {
 //!     let path = "test/fixtures/person.json";
-//!     let p1 = Person::from_file(path).expect("deserialize from file");
-//!     assert_eq!(p1.name, String::from("Shane"));
+//!     let person = Person::from_file(path).expect("deserialize from file");
+//!     assert_eq!(person.name, String::from("Shane"));
 //! }
 //! ```
 //!
-//! # With derive
+//! ### Full example with imports and error handing
 //!
-//! ```
+//! ```rust
+//! #[macro_use]
+//! extern crate serde_derive;
 //!
+//! #[macro_use]
+//! extern crate from_file_derive;
+//! extern crate from_file;
+//!
+//! use from_file::FromFile;
+//!
+//! #[derive(Deserialize, FromFile, Debug, PartialEq)]
+//! struct Person {
+//!     name: String,
+//!     age: usize
+//! }
+//!
+//! fn main() {
+//!     match Person::from_file("test/fixtures/person.json") {
+//!         Ok(p) => println!("Got a Person from a file!"),
+//!         Err(e) => eprintln!("{}", e)
+//!     }
+//! }
 //! ```
 #[macro_use]
 extern crate serde_derive;
@@ -67,16 +136,25 @@ pub trait FromFile {
     ///
     /// # Examples
     ///
-    /// ```ignore
-    /// #[derive(Deserialize, Debug, PartialEq)]
+    /// ```
+    /// # #[macro_use]
+    /// # extern crate serde_derive;
+    /// # extern crate serde;
+    /// # #[macro_use]
+    /// # extern crate from_file_derive;
+    /// # use from_file::FromFile;
+    /// #[derive(Deserialize)]
     /// struct Person {
-    ///   name: String
+    ///     name: String
     /// }
     ///
     /// impl FromFile for Person {}
     ///
-    /// let p1 = Person::from_file("test/fixtures/person.json").expect("file->Person");
-    /// assert_eq!(p1, Person{name: "Shane".into()});
+    /// fn main() {
+    ///     let path = "test/fixtures/person.json";
+    ///     let person = Person::from_file(path).expect("deserialize from file");
+    ///     assert_eq!(person.name, String::from("Shane"));
+    /// }
     /// ```
     ///
     fn from_file(input: &str) -> Result<Self, FromFileError>
@@ -97,7 +175,7 @@ pub trait FromFile {
 
     ///
     /// From a string like `file:config.yaml`, try to read the file
-    /// and if it exists, parse into a strongly typed struct `Person`
+    /// and if it exists, parse into a strongly typed struct `Self`
     ///
     fn from_yml_file(input: &str) -> Result<Self, FromFileError>
     where
@@ -110,7 +188,7 @@ pub trait FromFile {
 
     ///
     /// From a string like `file:config.yaml`, try to read the file
-    /// and if it exists, parse into a strongly typed struct `Person`
+    /// and if it exists, parse into a strongly typed struct `Self`
     ///
     fn from_json_file(input: &str) -> Result<Self, FromFileError>
     where

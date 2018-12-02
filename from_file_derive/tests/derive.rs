@@ -9,7 +9,7 @@ use from_file::FromFile;
 
 #[test]
 fn test_derive() {
-    #[derive(Deserialize, FromFile)]
+    #[derive(Deserialize, FromFile, Debug, PartialEq)]
     struct Person {
         name: String,
     }
