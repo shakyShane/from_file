@@ -14,6 +14,7 @@
 //! # extern crate serde;
 //! # #[macro_use]
 //! # extern crate from_file_derive;
+//! # extern crate from_file;
 //! # use from_file::FromFile;
 //! #[derive(Deserialize)]
 //! struct Person {
@@ -39,6 +40,7 @@
 //! # extern crate serde;
 //! # #[macro_use]
 //! # extern crate from_file_derive;
+//! # extern crate from_file;
 //! # use from_file::FromFile;
 //! #[derive(Deserialize, FromFile)]
 //! struct Person {
@@ -61,6 +63,7 @@
 //!
 //! #[macro_use]
 //! extern crate from_file_derive;
+//! extern crate from_file;
 //!
 //! use from_file::FromFile;
 //!
