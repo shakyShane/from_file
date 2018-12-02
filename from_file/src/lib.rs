@@ -1,3 +1,37 @@
+//! This crate provides a trait that can be implemented or derived
+//! for any struct or enum. Upon doing so, you'll get a `from_file` method
+//! that allows you to skip having read the file the disk & choosing the correct
+//! serde method - that will be done based on the file extension.
+//!
+//! # Example
+//!
+//! ```
+//! #[macro_use]
+//! extern crate serde_derive;
+//! extern crate serde;
+//!
+//! #[macro_use]
+//! extern crate from_file_derive;
+//!
+//! use from_file::FromFile;
+//!
+//! fn main() {
+//!     #[derive(Deserialize, FromFile)]
+//!     struct Person {
+//!         name: String
+//!     }
+//!
+//!     let path = "test/fixtures/person.json";
+//!     let p1 = Person::from_file(path).expect("deserialize from file");
+//!     assert_eq!(p1.name, String::from("Shane"));
+//! }
+//! ```
+//!
+//! # With derive
+//!
+//! ```
+//!
+//! ```
 #[macro_use]
 extern crate serde_derive;
 extern crate serde;
