@@ -1,6 +1,6 @@
 [package]
 name = "from_file_derive"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Shane Osbourne <shane.osbourne8@gmail.com>"]
 description = "Enable #[derive(FromFile)]"
 repository = "https://github.com/shakyShane/from_file"
