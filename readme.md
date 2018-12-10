@@ -5,6 +5,13 @@
 It saves you from having to convert a string into a file-path, attempt to read the contents & then
 deserialize. It's a wrapper around `serde` so you can use all of the features that you would normally 👍
 
+**Links:** 
+
+- [from_file on crates.io](https://crates.io/crates/from_file) 
+- [from_file_derive on crates.io](https://crates.io/crates/from_file_derive)
+- [docs](https://docs.rs/from_file/x/from_file/) 
+
+
 ## Example
 
 ```rust

@@ -1,3 +1,31 @@
+//! This macro enables `derive(FromFile)`, it should be used alongside
+//! [from_file](https://crates.io/crates/from_file)
+//!
+//! # Example
+//!
+//! ```
+//! #[macro_use]
+//! extern crate serde_derive;
+//! extern crate serde;
+//!
+//! #[macro_use]
+//! extern crate from_file_derive;
+//! extern crate from_file;
+//!
+//! use from_file::FromFile;
+//!
+//! #[derive(Deserialize, FromFile)]
+//! struct Person {
+//!     name: String
+//! }
+//!
+//! fn main() {
+//!     let path = "test/fixtures/person.json";
+//!     let person = Person::from_file(path).expect("deserialize from file");
+//!     assert_eq!(person.name, String::from("Shane"));
+//! }
+//! ```
+
 extern crate proc_macro;
 extern crate syn;
 
