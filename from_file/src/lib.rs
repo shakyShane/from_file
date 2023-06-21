@@ -104,9 +104,8 @@
 //!     }
 //! }
 //! ```
-#[macro_use]
-extern crate serde_derive;
 extern crate serde;
+extern crate serde_derive;
 extern crate serde_json;
 extern crate serde_yaml;
 
@@ -207,7 +206,7 @@ pub trait FromFile {
     /// Parse strings like file:config.yaml to extract the file path only
     ///
     fn get_file_path(input: &str) -> Result<String, FromFileError> {
-        let split: Vec<&str> = input.split(":").collect();
+        let split: Vec<&str> = input.split(':').collect();
         match split.len() {
             1 => Ok(split[0].into()),
             2 => Ok(split[1].into()),
