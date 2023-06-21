@@ -14,19 +14,36 @@ fn test_derive() {
         name: String,
     }
 
-    let p1 = Person::from_file("test/fixtures/person.json").expect("file->Person");
-    assert_eq!(
-        p1,
-        Person {
-            name: "Shane".into()
-        }
-    );
+    #[cfg(feature = "json")]
+    {
+        let p1 = Person::from_file("test/fixtures/person.json").expect("file->Person");
+        assert_eq!(
+            p1,
+            Person {
+                name: "Shane".into()
+            }
+        );
+    }
 
-    let p1 = Person::from_file("test/fixtures/person.yaml").expect("file->Person");
-    assert_eq!(
-        p1,
-        Person {
-            name: "Shane".into()
-        }
-    );
+    #[cfg(feature = "yaml")]
+    {
+        let p1 = Person::from_file("test/fixtures/person.yaml").expect("file->Person");
+        assert_eq!(
+            p1,
+            Person {
+                name: "Shane".into()
+            }
+        );
+    }
+
+    #[cfg(feature = "xml")]
+    {
+        let p1 = Person::from_file("test/fixtures/person.xml").expect("file->Person");
+        assert_eq!(
+            p1,
+            Person {
+                name: "Shane".into()
+            }
+        );
+    }
 }
