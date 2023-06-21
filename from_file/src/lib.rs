@@ -107,8 +107,6 @@
 #[macro_use]
 extern crate serde_derive;
 extern crate serde;
-extern crate serde_json;
-extern crate serde_yaml;
 
 use serde::Deserialize;
 use std::fs::File;
@@ -171,13 +169,17 @@ pub trait FromFile {
             .and_then(|ext| ext.to_str())
             .ok_or(FromFileError::InvalidExtension)?;
         match ext {
+            #[cfg(feature = "json")]
             "json" => <Self as FromFile>::from_json_file(input),
+            #[cfg(feature = "yaml")]
             "yml" | "yaml" => <Self as FromFile>::from_yml_file(input),
+            #[cfg(feature = "xml")]
             "xml" => <Self as FromFile>::from_xml_file(input),
             _ => Err(FromFileError::InvalidExtension),
         }
     }
 
+    #[cfg(feature = "yaml")]
     ///
     /// From a string like `file:config.yaml`, try to read the file
     /// and if it exists, parse into a strongly typed struct `Self`
@@ -191,6 +193,7 @@ pub trait FromFile {
             .and_then(<Self as FromFile>::from_yaml_string)
     }
 
+    #[cfg(feature = "json")]
     ///
     /// From a string like `file:config.yaml`, try to read the file
     /// and if it exists, parse into a strongly typed struct `Self`
@@ -204,6 +207,7 @@ pub trait FromFile {
             .and_then(<Self as FromFile>::from_json_string)
     }
 
+    #[cfg(feature = "xml")]
     ///
     /// From a string like `file:config.xml`, try to read the file
     /// and if it exists, parse into a strongly typed struct `Self`
@@ -242,6 +246,7 @@ pub trait FromFile {
         Ok(contents)
     }
 
+    #[cfg(feature = "yaml")]
     ///
     /// Parse any YAML string directly into a Self
     ///
@@ -252,6 +257,7 @@ pub trait FromFile {
         serde_yaml::from_str(&contents).map_err(|e| FromFileError::SerdeError(e.to_string()))
     }
 
+    #[cfg(feature = "json")]
     ///
     /// Parse json string directly into a Self
     ///
@@ -262,6 +268,7 @@ pub trait FromFile {
         serde_json::from_str(&contents).map_err(|e| FromFileError::SerdeError(e.to_string()))
     }
 
+    #[cfg(feature = "xml")]
     ///
     /// Parse XML string directly into a Self
     ///
@@ -299,20 +306,37 @@ mod tests {
         }
         impl FromFile for Person {}
 
-        let p1 = Person::from_file("test/fixtures/person.json").expect("file->Person");
-        assert_eq!(
-            p1,
-            Person {
-                name: "Shane".into()
-            }
-        );
+        #[cfg(feature = "json")]
+        {
+            let p1 = Person::from_file("test/fixtures/person.json").expect("file->Person");
+            assert_eq!(
+                p1,
+                Person {
+                    name: "Shane".into()
+                }
+            );
+        }
 
-        let p1 = Person::from_file("test/fixtures/person.yaml").expect("file->Person");
-        assert_eq!(
-            p1,
-            Person {
-                name: "Shane".into()
-            }
-        );
+        #[cfg(feature = "yaml")]
+        {
+            let p1 = Person::from_file("test/fixtures/person.yaml").expect("file->Person");
+            assert_eq!(
+                p1,
+                Person {
+                    name: "Shane".into()
+                }
+            );
+        }
+
+        #[cfg(feature = "xml")]
+        {
+            let p1 = Person::from_file("test/fixtures/person.xml").expect("file->Person");
+            assert_eq!(
+                p1,
+                Person {
+                    name: "Shane".into()
+                }
+            );
+        }
     }
 }

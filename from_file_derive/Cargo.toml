@@ -14,9 +14,14 @@ quote = "0.6.10"
 [dev-dependencies]
 serde = "1.0.80"
 serde_derive = "1.0.80"
-from_file = { path = "../from_file", version = "0.1.0" }
+from_file = { path = "../from_file", version = "0.1.0", features = ["yaml", "json", "xml"] }
 
 [lib]
 proc-macro = true
 
 travis-ci = { repository = "shakyShane/from_file", branch = "master" }
+
+[features]
+yaml = []
+json = []
+xml = []
