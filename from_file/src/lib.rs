@@ -314,5 +314,13 @@ mod tests {
                 name: "Shane".into()
             }
         );
+
+        let p1 = Person::from_file("test/fixtures/person.xml").expect("file->Person");
+        assert_eq!(
+            p1,
+            Person {
+                name: "Shane".into()
+            }
+        );
     }
 }
