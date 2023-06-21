@@ -173,6 +173,7 @@ pub trait FromFile {
         match ext {
             "json" => <Self as FromFile>::from_json_file(input),
             "yml" | "yaml" => <Self as FromFile>::from_yml_file(input),
+            "xml" => <Self as FromFile>::from_xml_file(input),
             _ => Err(FromFileError::InvalidExtension),
         }
     }
@@ -201,6 +202,19 @@ pub trait FromFile {
         <Self as FromFile>::get_file_path(input)
             .and_then(<Self as FromFile>::file_read)
             .and_then(<Self as FromFile>::from_json_string)
+    }
+
+    ///
+    /// From a string like `file:config.xml`, try to read the file
+    /// and if it exists, parse into a strongly typed struct `Self`
+    ///
+    fn from_xml_file(input: &str) -> Result<Self, FromFileError>
+    where
+        for<'de> Self: Deserialize<'de> + Sized,
+    {
+        <Self as FromFile>::get_file_path(input)
+            .and_then(<Self as FromFile>::file_read)
+            .and_then(<Self as FromFile>::from_xml_string)
     }
 
     ///
@@ -246,6 +260,16 @@ pub trait FromFile {
         for<'de> Self: Deserialize<'de>,
     {
         serde_json::from_str(&contents).map_err(|e| FromFileError::SerdeError(e.to_string()))
+    }
+
+    ///
+    /// Parse XML string directly into a Self
+    ///
+    fn from_xml_string(contents: String) -> Result<Self, FromFileError>
+    where
+        for<'de> Self: Deserialize<'de>,
+    {
+        quick_xml::de::from_str(&contents).map_err(|e| FromFileError::SerdeError(e.to_string()))
     }
 }
 
